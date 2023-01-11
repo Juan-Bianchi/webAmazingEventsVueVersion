@@ -10,38 +10,38 @@
    </head>
 
     <body>
-        <div id="app">{{ message }}
-          
-            <header class="bg-info">
-              <a href="#"><img class ="logo" src="./assets/images/LogoAmazingEvents.png" alt="logo" title="logo"></a>
+        <div id="app">
 
-              <nav class="navbar navbar-expand-lg navbar-dark bg-info">
-                <div class="container-fluid">
-                  <h1>Amazing Events</h1>
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./upEvents.html">Upcoming Events</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./pastEvents.html">Past Events</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./contact.html">Contact Us</a>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="./stats.html">Stats</a>
-                      </li>
-                    </ul>
+            <header class="bg-info">
+                <a href="#"><img class ="logo" src="./assets/images/LogoAmazingEvents.png" alt="logo" title="logo"></a>
+
+                <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+                    <div class="container-fluid">
+                        <h1>Amazing Events</h1>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="./upEvents.html">Upcoming Events</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="./pastEvents.html">Past Events</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="./contact.html">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link active" aria-current="page" href="./stats.html">Stats</a>
+                            </li>
+                        </ul>
+                    </div>
                   </div>
-                </div>
-              </nav>
+                </nav>
             </header>
 
 
@@ -56,31 +56,35 @@
 
                 <div class="filtro-categorias">
 
-                  <!-- CHECKBOX -->
-                  <div class="checks"> 
-                    <input type="checkbox" class="btn-check" id="" name="">
-                    <label class="btn btn-fondo-blanco" for="">NOMBRE</label>`
+                  <div class="checks">
+                    <template v-if="categories" v-for="category of categories">
+                        <input v-model="checks" @change="doubleFilter" type="checkbox" class="btn-check" :id="categories.indexOf(category)" :value="category">
+                        <label class="btn btn-fondo-blanco" :for="categories.indexOf(category)">{{category}}</label>
+                    </template> 
                   </div>
                   
                   
                   <form class="d-flex" role="search" id="search">
-                    <input class="form-control me-2" type="search" placeholder="Search By Event Name" aria-label="Search" id="searchField">
+                    <input v-model="searchValue" @input="doubleFilter" class="form-control me-2" type="search" placeholder="Search By Event Name" aria-label="Search" id="searchField">
                   </form>
 
                 </div>
-                <!-- CARS -->
+
+
                 <div class="card-container row">
-                  <article class="card card-medium col-10 col-lg-3 col-md-5 justify-content-center ">
-                    <img src= "" class="card-img-top" alt="" title="">
+                  <article v-if="filteredEvents.length" v-for="event of filteredEvents" class="card card-medium col-10 col-lg-3 col-md-5 justify-content-center ">
+                    <img :src= "event.image" class="card-img-top" :alt="event.name" :title="event.name">
                     <div class="card-body">
-                        <h5 class="card-title">NOMBRE</h5>
-                        <p class="card-text">DESCRIPCION</p>
+                        <h5 class="card-title">{{event.name}}</h5>
+                        <p class="card-text">{{event.description}}</p>
                         <div>
-                            <p class="card-text">Price: $ PRECIO</p>
-                            <a href="./details.html?id=${card._id}" class="btn btn-outline-light btn-info">See More</a>
+                            <p class="card-text">Price: $ {{event.price}}</p>
+                            <a :href="'./details.html?id=' + event._id" class="btn btn-outline-light btn-info">See More</a>
                         </div>
                     </div>
                   </article>
+
+                    <h2 v-else id="noResults">No events found with these filters. Try later!</h2>                  
                 </div>
 
             </main>
@@ -101,10 +105,9 @@
               <p>WebPage created by Juan Bianchi</p>
             </footer>
 
-            
+        </div>  
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
             <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
             <script src="./assets/scripts/main.js"></script>
-        </div>
     </body>
 </html>
