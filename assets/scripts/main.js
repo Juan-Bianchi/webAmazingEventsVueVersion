@@ -8,7 +8,7 @@ createApp ( {
             filteredEvents: [],
             categories: [],
             searchValue: "",
-            checks: []
+            checks: [],
         }
     },
 
